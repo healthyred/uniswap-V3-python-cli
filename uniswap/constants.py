@@ -55,9 +55,3 @@ _router_contract_addresses_v2 = {
     "harmony_mainnet": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
     "harmony_testnet": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506",
 }
-
-_non_fungible_manager_addresses = {
-    "mainnet": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
-    "ropsten": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-
-}

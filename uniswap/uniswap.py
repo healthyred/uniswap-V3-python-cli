@@ -102,3 +102,35 @@ class UniswapV3:
         self.non_fungible_manager = _load_contract(
             self.w3, abi_name="uniswap-v3/nonfungiblemanager", address=non_fungible_manager_contract_addr
         )
+
+        # ------ NFT Manager --------------------------------------------------------------------
+
+        def list_positions(self): 
+            """
+            async function NFTList(){
+                const web3 = new Web3(provider);
+                const acc = await web3.eth.getAccounts();
+                var FROM = acc[0];
+                var NFTLength = await TokBal(V3nftAddress);
+                var nfts = [];
+                for(var x=0;x<NFTLength;x++){
+                    const V3NFT = new web3.eth.Contract(V3NFTabi,V3nftAddress);
+                    var MyNFT = await V3NFT.methods.tokenOfOwnerByIndex(FROM,x).call({});
+                    nfts.push('<a href="https://app.uniswap.org/#/pool/'+MyNFT+'" target="blank">https://app.uniswap.org/#/pool/'+MyNFT+'</a><br>');
+                    document.getElementById("IDs").innerHTML = "looking..."
+                }
+                
+                document.getElementById("IDs").innerHTML = nfts;
+            }
+            """
+            # self.non_fungible_manager.functions
+            return
+
+
+        # ------ Market --------------------------------------------------------------------
+
+if __name__ == "__main__":
+
+    # Testing portion remove later
+    testUni = UniswapV3()
+    
