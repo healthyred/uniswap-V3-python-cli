@@ -1,10 +1,10 @@
 import functools
 from typing import Callable, Any, List, Dict, TYPE_CHECKING
 
-from .constants import ETH_ADDRESS
+from constants import ETH_ADDRESS
 
 if TYPE_CHECKING:
-    from .uniswap import Uniswap
+    from uniswap import Uniswap
 
 
 def check_approval(method: Callable) -> Callable:

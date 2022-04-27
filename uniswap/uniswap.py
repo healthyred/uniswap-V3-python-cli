@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import os
 import time
 import logging
@@ -5,9 +6,9 @@ import functools
 from typing import List, Any, Optional, Union, Tuple, Dict, Iterable
 
 from web3 import Web3
-from .types import AddressLike
+from uni_types import AddressLike
 
-from .util import (
+from util import (
     _str_to_addr,
     _addr_to_str,
     _validate_address,
@@ -16,12 +17,14 @@ from .util import (
     is_same_address,
 )
 
-from .constants import (
+from constants import (
     _netid_to_name,
-    _factory_contract_addresses_v1,
-    _factory_contract_addresses_v2,
-    _router_contract_addresses_v2,
     ETH_ADDRESS,
+)
+
+from config import (
+    WALLET_ADDRESS,
+    WALLET_PRIVATE_KEY,
 )
 
 PROVIDER='https://mainnet.infura.io/v3/49d9273a4f5c446697ee32b9af8bc7cc'
@@ -39,9 +42,9 @@ class UniswapV3:
 
     def __init__(
         self,
-        address: Union[AddressLike, str, None],
-        private_key: Optional[str],
-        provider: str = None,
+        address: Union[AddressLike, str, None] = WALLET_ADDRESS,
+        private_key: Optional[str] = WALLET_PRIVATE_KEY,
+        provider: str = PROVIDER,
         use_estimate_gas: bool = True,
         network: str = 'ETHEREUM',
         web3: Web3 = None,
@@ -56,10 +59,10 @@ class UniswapV3:
         :param non_fungible_manager_contract_addr: Can be optionally set to override the address of the factory contract.
         """
         self.address = _str_to_addr(
-            address or "0x0000000000000000000000000000000000000000"
+            WALLET_ADDRESS or "0x0000000000000000000000000000000000000000"
         )
         self.private_key = (
-            private_key
+            WALLET_PRIVATE_KEY
             or "0x0000000000000000000000000000000000000000000000000000000000000000"
         )
 
@@ -103,34 +106,32 @@ class UniswapV3:
             self.w3, abi_name="uniswap-v3/nonfungiblemanager", address=non_fungible_manager_contract_addr
         )
 
-        # ------ NFT Manager --------------------------------------------------------------------
+    # ------ NFT Manager --------------------------------------------------------------------
 
-        def list_positions(self): 
-            """
-            async function NFTList(){
-                const web3 = new Web3(provider);
-                const acc = await web3.eth.getAccounts();
-                var FROM = acc[0];
-                var NFTLength = await TokBal(V3nftAddress);
-                var nfts = [];
-                for(var x=0;x<NFTLength;x++){
-                    const V3NFT = new web3.eth.Contract(V3NFTabi,V3nftAddress);
-                    var MyNFT = await V3NFT.methods.tokenOfOwnerByIndex(FROM,x).call({});
-                    nfts.push('<a href="https://app.uniswap.org/#/pool/'+MyNFT+'" target="blank">https://app.uniswap.org/#/pool/'+MyNFT+'</a><br>');
-                    document.getElementById("IDs").innerHTML = "looking..."
-                }
-                
-                document.getElementById("IDs").innerHTML = nfts;
-            }
-            """
-            # self.non_fungible_manager.functions
-            return
+    def list_positions(self): 
+        """
+        Function to get all the NFTs in the wallet.
+        """
+        uniswap_nft_counts = self.non_fungible_manager.functions.balanceOf("0xE39fDB722dCabCea5b764b483F524dE866f82253").call()
+        nft_ids = []
+        for index in range(uniswap_nft_counts):
+            nft_id = self.non_fungible_manager.functions.tokenOfOwnerByIndex("0xE39fDB722dCabCea5b764b483F524dE866f82253", index).call()
+            nft_ids.append(nft_id)
+
+        id_to_info        
+
+        for nft_id in nft_ids:
+            info = self.non_fungible_manager.functions.positions(nft_id).call()
+            print(info)
 
 
-        # ------ Market --------------------------------------------------------------------
+        return
+
+
+    # ------ Market --------------------------------------------------------------------
 
 if __name__ == "__main__":
 
     # Testing portion remove later
     testUni = UniswapV3()
-    
+    testUni.list_positions()
