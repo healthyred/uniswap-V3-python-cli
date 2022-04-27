@@ -4,6 +4,7 @@ import time
 import logging
 import functools
 from typing import List, Any, Optional, Union, Tuple, Dict, Iterable
+from non_fungible_manager_positions_return import NonFungibleManagerPositionsReseponse
 
 from web3 import Web3
 from uni_types import AddressLike
@@ -14,6 +15,7 @@ from util import (
     _validate_address,
     _load_contract,
     _load_contract_erc20,
+    parse_nft_response_into_object,
     is_same_address,
 )
 
@@ -28,7 +30,6 @@ from config import (
 )
 
 PROVIDER='https://mainnet.infura.io/v3/49d9273a4f5c446697ee32b9af8bc7cc'
-
 
 logger = logging.getLogger(__name__)
 
@@ -118,14 +119,14 @@ class UniswapV3:
             nft_id = self.non_fungible_manager.functions.tokenOfOwnerByIndex("0xE39fDB722dCabCea5b764b483F524dE866f82253", index).call()
             nft_ids.append(nft_id)
 
-        id_to_info        
+        id_to_info = {}       
 
         for nft_id in nft_ids:
             info = self.non_fungible_manager.functions.positions(nft_id).call()
-            print(info)
+            nft_info = parse_nft_response_into_object(info)
+            id_to_info[nft_id] = nft_info
 
-
-        return
+        return id_to_info
 
 
     # ------ Market --------------------------------------------------------------------
@@ -134,4 +135,4 @@ if __name__ == "__main__":
 
     # Testing portion remove later
     testUni = UniswapV3()
-    testUni.list_positions()
+    print(testUni.list_positions())

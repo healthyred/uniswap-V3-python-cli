@@ -7,7 +7,7 @@ from web3 import Web3
 from web3.exceptions import NameNotFound
 
 from uni_types import AddressLike, Address, Contract
-
+from non_fungible_manager_positions_return import NonFungibleManagerPositionsReseponse
 
 def _str_to_addr(s: Union[AddressLike, str]) -> Address:
     """Idempotent"""
@@ -64,3 +64,22 @@ def _encode_path(token_in: AddressLike, route: List[Tuple[int, AddressLike]]) ->
     https://github.com/Uniswap/uniswap-v3-sdk/blob/1a74d5f0a31040fec4aeb1f83bba01d7c03f4870/src/utils/encodeRouteToPath.ts
     """
     raise NotImplementedError
+
+def parse_nft_response_into_object(response) -> NonFungibleManagerPositionsReseponse:
+    """
+    Converts the return array into the object.
+    """
+    return NonFungibleManagerPositionsReseponse(
+        response[0],
+        response[1],
+        response[2],
+        response[3],
+        response[4],
+        response[5],
+        response[6],
+        response[7],
+        response[8],
+        response[9],
+        response[10],
+        response[11],
+    )
