@@ -30,4 +30,9 @@ class NonFungibleManagerPositionsReseponse:
         self.tokensOwed1 = tokensOwed1        
 
     def __str__(self) -> str:
-        return self.__dict__
+        
+        ret = ""
+        ret += f'token0: {self.token0} \n'
+        ret += f'token1: {self.token1} \n'
+        ret += f'fee: {self.fee/1000000} \n'
+        return ret
