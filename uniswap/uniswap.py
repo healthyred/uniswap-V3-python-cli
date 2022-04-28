@@ -137,6 +137,7 @@ class UniswapV3:
 
         for nft_id in nft_ids:
             info = self.non_fungible_manager.functions.positions(nft_id).call()
+            print(f'{id}: {info}')
             nft_info = parse_nft_response_into_object(info)
             id_to_info[nft_id] = nft_info
 
@@ -272,4 +273,6 @@ if __name__ == "__main__":
 
     # Testing portion remove later
     testUni = UniswapV3()
-    print(testUni.list_positions())
+    pos_map = testUni.list_positions()
+    for id, nft in pos_map.items():
+        print(f'id: {id},\nposition: {nft}')
