@@ -80,7 +80,7 @@ class UniswapV3:
             or "0x0000000000000000000000000000000000000000000000000000000000000000"
         )
         self.use_estimate_gas = use_estimate_gas
-        
+
         if web3:
             self.w3 = web3
         else:
@@ -156,14 +156,13 @@ class UniswapV3:
         amount0Min,
         amount1Min,
         recipient,
-        deadline,
         fee: int = 3000,
-    ):
-        tx_params = self._get_tx_params(max_eth)
-        func_params = []
+    ):        
+        if token0 == token1:
+            raise ValueError
+        func_params = [token0, token1, fee, tickLower, tickUpper, amount0Desired, amount1Desired, amount0Min, amount1Min, recipient, self._deadline()]
         function = self.non_fungible_manager.functions.mint(*func_params)
-        return self._build_and_send_tx(function, tx_params)
-        pass
+        return self._build_and_send_tx(function)
 
     def increase_liquidity(self, token_id, liquidity, amount0, amount1) -> HexBytes:
         # tx_params = self._get_tx_params(max_eth)
