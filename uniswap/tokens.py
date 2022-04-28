@@ -4,7 +4,7 @@ from web3 import Web3
 from web3.types import ChecksumAddress
 
 
-tokens: Dict[str, ChecksumAddress] = {
+TOKENS: Dict[str, ChecksumAddress] = {
     k: Web3.toChecksumAddress(v)
     for k, v in {
         "ETH": "0x0000000000000000000000000000000000000000",
@@ -16,6 +16,8 @@ tokens: Dict[str, ChecksumAddress] = {
         "USDC": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     }.items()
 }
+
+INVERSE_TOKENS = {v: k for k, v in TOKENS.items()}
 
 tokens_rinkeby: Dict[str, ChecksumAddress] = {
     k: Web3.toChecksumAddress(v)

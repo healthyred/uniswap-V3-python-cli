@@ -1,3 +1,7 @@
+from tokens import (
+    INVERSE_TOKENS,
+    TOKENS
+)
 
 class NonFungibleManagerPositionsReseponse:
 
@@ -30,9 +34,13 @@ class NonFungibleManagerPositionsReseponse:
         self.tokensOwed1 = tokensOwed1        
 
     def __str__(self) -> str:
-        
         ret = ""
-        ret += f'token0: {self.token0} \n'
-        ret += f'token1: {self.token1} \n'
+        ret += f'operator: {self.operator} \n'
+        ret += f'token0: {INVERSE_TOKENS[self.token0]} \n'
+        ret += f'token1: {INVERSE_TOKENS[self.token1]} \n'
         ret += f'fee: {self.fee/1000000} \n'
+        ret += f'liquidity: {self.liquidity} \n'
+        ret += f'tickLower: {self.tickLower} \n'
+        ret += f'tickUpper: {self.tickUpper} \n'
+
         return ret
