@@ -69,29 +69,34 @@ w3 = Web3(Web3.HTTPProvider(PROVIDER, request_kwargs={"timeout": 60}))
 poolAddress = _str_to_addr('0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8')
 pool_contract = _load_contract(w3, abi_name="uniswap-v3/pool", address=poolAddress)
 
-
-async def get_pool_immutables():
+def get_pool_immutables():
     """
-    Should turn this into an async function later.
+    We write this function as an async func so that we don't have sequential calls
+    to the blockchain where our data becomes out of sync by some number of blocks.
+    TODO: turn this function async.
     """
-    test = await asyncio.gather(
-        pool_contract.functions.factory().call(),
-        pool_contract.functions.token0().call(),
-        pool_contract.functions.token1().call(),
-        pool_contract.functions.fee().call(),
-        pool_contract.functions.tickSpacing().call(),
-        pool_contract.functions.maxLiquidityPerTick().call()
-    )
+    # test = await asyncio.gather(
+    #     pool_contract.functions.factory().call(),
+    #     pool_contract.functions.token0().call(),
+    #     pool_contract.functions.token1().call(),
+    #     pool_contract.functions.fee().call(),
+    #     pool_contract.functions.tickSpacing().call(),
+    #     pool_contract.functions.maxLiquidityPerTick().call()
+    # )
 
-    print(test)
-    # factory = pool_contract.functions.factory().call()
-    # token0 = pool_contract.functions.token0().call()
-    # token1 = pool_contract.functions.token1().call()
-    # fee = pool_contract.functions.fee().call()
-    # tickSpacing = pool_contract.functions.tickSpacing().call()
-    # maxLiquidityPerTick = pool_contract.functions.maxLiquidityPerTick().call()
+    # print(test)
+    factory = pool_contract.functions.factory().call()
+    token0 = pool_contract.functions.token0().call()
+    token1 = pool_contract.functions.token1().call()
+    fee = pool_contract.functions.fee().call()
+    tickSpacing = pool_contract.functions.tickSpacing().call()
+    maxLiquidityPerTick = pool_contract.functions.maxLiquidityPerTick().call()
 
-    # return Immutables(factory, token0, token1, fee, tickSpacing, maxLiquidityPerTick)
+    return Immutables(factory, token0, token1, fee, tickSpacing, maxLiquidityPerTick)
 
 if __name__ == "__main__":
-    get_pool_immutables()
+    test = get_pool_immutables()
+
+    print(f'{test.factory}, {test.token0}, {test.token1}, {test.tick_spacing}, {test.fee}, {test.max_liquidity_per_tick}')
+
+
