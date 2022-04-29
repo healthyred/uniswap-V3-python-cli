@@ -13,8 +13,8 @@ def get_powers_of_2():
     return map_of_2
 
 def most_significant_bit(num):
-    assert(num > 0, 'ZERO')
-    assert(num < MAX_INT, 'MAX')
+    assert num > 0, 'ZERO'
+    assert num < MAX_INT, 'MAX'
     
     powers_of_2 = get_powers_of_2()
 
@@ -24,6 +24,18 @@ def most_significant_bit(num):
             num = num >> power
             msb += power
     return msb
+
+
+def nearest_usable_tick(tick, tick_spacing):
+    assert type(tick) == int and type(tick_spacing) == int, 'INTEGERS'
+    assert tick_spacing > 0, 'TICK_SPACING'
+    assert tick >= TickMath.MIN_TICK and tick <= TickMath.MAX_TICK, 'TICK_BOUND'
+    rounded = round(tick / tick_spacing) * tick_spacing
+    if rounded < TickMath.MIN_TICK:
+        return rounded + tick_spacing
+    elif rounded > TickMath.MAX_TICK:
+        return rounded - tick_spacing
+    return rounded
 
 class TickMath:
 
