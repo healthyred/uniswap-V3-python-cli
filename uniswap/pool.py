@@ -112,6 +112,10 @@ class Pool:
             unlocked=slot[6]
             )
 
+    def gettoken0Price(): 
+        """
+        Returns the price for token 0 of the pool.
+        """
 
 if __name__ == "__main__":
     # test = get_pool_immutables()

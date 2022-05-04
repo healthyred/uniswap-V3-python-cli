@@ -1,6 +1,21 @@
+from enum import Enum
+from typing import Union
+
 ETH_ADDRESS = "0x0000000000000000000000000000000000000000"
 WETH9_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 PROVIDER='https://mainnet.infura.io/v3/49d9273a4f5c446697ee32b9af8bc7cc'
+MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+
+BigintIsh = Union[str, int]
+
+class TradeType(Enum):
+    EXACT_INPUT = 1
+    EXACT_OUTPUT = 2
+
+class Rounding(Enum):
+    ROUND_DOWN = 1
+    ROUND_HALF_UP = 2
+    ROUND_UP = 3
 
 # see: https://chainid.network/chains/
 _netid_to_name = {
