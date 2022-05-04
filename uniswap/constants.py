@@ -6,6 +6,9 @@ WETH9_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 PROVIDER='https://mainnet.infura.io/v3/49d9273a4f5c446697ee32b9af8bc7cc'
 MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 
+Q96 = 2 ** 96
+Q192 = Q96 ** 2
+
 BigintIsh = Union[str, int]
 
 class TradeType(Enum):

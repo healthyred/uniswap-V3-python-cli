@@ -1,10 +1,11 @@
 import asyncio
 from web3 import Web3
 from web3.eth import Contract
-
+from price import Price
 
 from constants import (
     PROVIDER,
+    Q192
 )
 from util import (
     _str_to_addr,
@@ -112,18 +113,39 @@ class Pool:
             unlocked=slot[6]
             )
 
-    def gettoken0Price(): 
+    def get_token0_price(self): 
         """
         Returns the price for token 0 of the pool.
         """
+        immutables = self.get_pool_immutables()
+        state = self.get_pool_state()
+        price = Price(immutables.token0, immutables.token1, Q192, state.sqrt_price_x96 * state.sqrt_price_x96)
+        if price:
+            return price
+        return None
+
+    def get_token1_price(self):
+        """
+        Returns the current mid-price of the pool in terms of token1, i.e. the ratio of token0 over token1.
+        """
+        immutables = self.get_pool_immutables()
+        state = self.get_pool_state()
+        price = Price(immutables.token1, immutables.token0, state.sqrt_price_x96 * state.sqrt_price_x96, Q192)
+        if price:
+            return price
+        return None
 
 if __name__ == "__main__":
     # test = get_pool_immutables()
     pool = Pool('0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8')
-    test = pool.get_pool_immutables()
+    
+    print(pool.get_token0_price().quotient())
+    print(pool.get_token1_price().quotient())
 
-    print(f'{test.factory}, {test.token0}, {test.token1}, {test.tick_spacing}, {test.fee}, {test.max_liquidity_per_tick}')
+    # test = pool.get_pool_immutables()
 
-    state = pool.get_pool_state()
-    print(f'{state.liquidity}, {state.sqrt_price_x96}, {state.tick}, {state.observation_index}, {state.observation_cardinality}, {state.observation_cardinality_next}, {state.unlocked}')
+    # print(f'{test.factory}, {test.token0}, {test.token1}, {test.tick_spacing}, {test.fee}, {test.max_liquidity_per_tick}')
+
+    # state = pool.get_pool_state()
+    # print(f'{state.liquidity}, {state.sqrt_price_x96}, {state.tick}, {state.observation_index}, {state.observation_cardinality}, {state.observation_cardinality_next}, {state.unlocked}')
 
