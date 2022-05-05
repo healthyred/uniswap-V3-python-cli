@@ -75,10 +75,7 @@ class Pool:
     ):
         self.w3 = Web3(Web3.HTTPProvider(PROVIDER, request_kwargs={"timeout": 60}))
         self.pool_address = _str_to_addr(pool_address_str)
-        self.pool_contract = _load_contract(self.w3, abi_name="uniswap-v3/pools", address=self.pool_address)
-        # w3 = Web3(Web3.HTTPProvider(PROVIDER, request_kwargs={"timeout": 60}))
-        # poolAddress = _str_to_addr('0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8')
-        # pool_contract = _load_contract(w3, abi_name="uniswap-v3/pool", address=poolAddress)
+        self.pool_contract = _load_contract(self.w3, abi_name="uniswap-v3/pool", address=self.pool_address)
 
     def get_pool_immutables(self):
         """
@@ -94,7 +91,6 @@ class Pool:
         maxLiquidityPerTick = self.pool_contract.functions.maxLiquidityPerTick().call()
 
         return Immutables(factory, token0, token1, fee, tickSpacing, maxLiquidityPerTick)
-
 
     def get_pool_state(self):
         """
@@ -137,15 +133,26 @@ class Pool:
 
 if __name__ == "__main__":
     # test = get_pool_immutables()
-    pool = Pool('0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8')
-    
-    print(pool.get_token0_price().quotient())
-    print(pool.get_token1_price().quotient())
+    USDC_WETH_POOL = Pool('0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8')
+    DAI_USDC_POOL = Pool('0x5777d92f208679DB4b9778590Fa3CAB3aC9e2168')
+    WBTC_USDC_POOL = Pool('0x99ac8ca7087fa4a2a1fb6357269965a2014abc35')
+    print(f'wbtc price: {WBTC_USDC_POOL.get_token0_price().quotient()}')
+    price_x96 = USDC_WETH_POOL.get_pool_state().sqrt_price_x96 ** 2
+    # print(2 ** 192)
+    # print(price_x96)
+    # print(USDC_WETH_POOL.get_pool_state().sqrt_price_x96)
+    # print((USDC_WETH_POOL.get_pool_state().sqrt_price_x96 ** 2) / (2 ** 192))
+    # print(2 ** 192 / USDC_WETH_POOL.get_pool_state().sqrt_price_x96 ** 2)
 
-    # test = pool.get_pool_immutables()
+    # print(USDC_WETH_POOL.get_token1_price().quotient())
+    # print(f'Dai/usdc price: {(DAI_USDC_POOL.get_pool_state().sqrt_price_x96 ** 2) / (2 ** 192)}')
+    # print(f'Dai/usdc price: {DAI_USDC_POOL.get_token0_price().quotient()}')
 
-    # print(f'{test.factory}, {test.token0}, {test.token1}, {test.tick_spacing}, {test.fee}, {test.max_liquidity_per_tick}')
+    test = USDC_WETH_POOL.get_pool_immutables()
 
-    # state = pool.get_pool_state()
-    # print(f'{state.liquidity}, {state.sqrt_price_x96}, {state.tick}, {state.observation_index}, {state.observation_cardinality}, {state.observation_cardinality_next}, {state.unlocked}')
+    print(f'{test.factory}, {test.token0}, {test.token1}, {test.tick_spacing}, {test.fee}, {test.max_liquidity_per_tick}')
 
+    state = USDC_WETH_POOL.get_pool_state()
+    print(f'{state.liquidity}, sqrt_price_x96: {state.sqrt_price_x96}, {state.tick}, {state.observation_index}, {state.observation_cardinality}, {state.observation_cardinality_next}, {state.unlocked}')
+
+    print(state.sqrt_price_x96 ** 2 // (2 ** 192))
