@@ -146,6 +146,29 @@ class UniswapV3:
     # ------ Market --------------------------------------------------------------------
     # https://github.com/Uniswap/v3-sdk/blob/main/src/nonfungiblePositionManager.ts
     
+
+    def encode_create(self, token0_address, token1_address, fee, sqrt_ratio_x96):
+        encoded_create = self.non_fungible_manager.encodeABI(
+            fn_name="createAndInitializePoolIfNecessary",
+            args=[
+                (
+                    token0_address,
+                    token1_address,
+                    fee,
+                    hex(sqrt_ratio_x96)
+                )
+            ]
+        )
+        return encoded_create
+
+    def add_call_parameters(self, amount0_desired, amount1_desired):
+        call_datas = []
+
+        # adjust for slippage
+        # minimum_amounts = 
+
+        
+
     def mint(
         self,
         token0: AddressLike,
@@ -275,3 +298,6 @@ if __name__ == "__main__":
     pos_map = testUni.list_positions()
     for id, nft in pos_map.items():
         print(f'id: {id},\nposition: {nft}')
+
+    # Multicall example
+    # self.router.functions.multicall([swap_data, unwrap_data]),
